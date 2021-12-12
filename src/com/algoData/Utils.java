@@ -17,13 +17,19 @@ public class Utils {
         return d;
     }
 
-    public static void printVector(List<Fold> foldVector) {
-        for (Fold fold:foldVector) {
-            if(fold.equals(Fold.MOUNTAIN)) {
+    public static void printVector(List<Fold> foldVector, int firstIndex, int lastIndex) {
+        for (int i = 0; i < firstIndex; i++) {
+            System.out.print('_');
+        }
+        for (int i = firstIndex; i <= lastIndex; i++) {
+            if(foldVector.get(i).equals(Fold.MOUNTAIN)) {
                 System.out.print('M');
             } else {
                 System.out.print('V');
             }
+        }
+        for (int i = lastIndex; i < foldVector.size() - 1; i++) {
+            System.out.print('_');
         }
         System.out.println();
     }
