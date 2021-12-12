@@ -86,6 +86,7 @@ public class BuildBridge {
         firstIndex += foldSize;
     }
 
+
     /**
      * Performs 1 fold.
      * Tries to perform biggest currently possible fold.
@@ -134,9 +135,36 @@ public class BuildBridge {
         return (endIndex + 1) / 2;
     }
 
-    private int findLeftMaxFold() {
-        int max = 0;
+    /**
+     * Performs 1 fold.
+     * Tries to perform biggest currently possible fold.
+     * Goes from MAX size of fold to size of 1
+     */
+    private int foldRightMethod() {
 
+        // Init index // TODO WARNING lastIndex - firstIndex ??
+        int middleIndex = getMiddleIndex(lastIndex);
+
+        // Number of edges (folds) which will reduce foldVector
+        int foldSize = lastIndex - middleIndex + 1;
+        int leftIndex = middleIndex - foldSize + 1;
+
+        while( 0 < foldSize ) {
+
+            if( isFoldPossible(leftIndex, lastIndex) ) {
+                return foldSize;
+            }
+
+            // Move index to the right
+            middleIndex++;
+            leftIndex += 2;
+
+            foldSize--;
+        }
+        return 0;
+    }
+
+    private int findLeftMaxFold() {
         int rightIndex = getMiddleIndex(lastIndex) - 1;
 
         // Keep number EVEN
@@ -160,7 +188,7 @@ public class BuildBridge {
 
             foldSize--;
         }
-        return max;
+        return 0;
     }
 
     public void run() {
