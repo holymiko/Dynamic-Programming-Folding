@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+../out/
+/workspace.xml
+# Datasource local storage ignored files
+/../../../../../../../../:\Users\mikol\IdeaProjects\practical1.1\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
