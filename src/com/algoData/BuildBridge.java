@@ -29,14 +29,13 @@ public class BuildBridge {
     }
 
 
-    private boolean isFoldPossible(int leftIndex) {
-        int rightIndex = foldVector.size() - 1;
+    private boolean isFoldPossible(int leftIndex, int rightIndex) {
         System.out.println("L "+leftIndex+"  R "+rightIndex);
 
         // Indexes are moving towards each other to have a symmetry of the fold
         // ->.......<- // .->.....<-. // ..->...<-.. // ...->.<-... //
         while(leftIndex + 1 < rightIndex) {
-            System.out.println(">> L "+leftIndex+"  R "+rightIndex);
+//            System.out.println(">> L "+leftIndex+"  R "+rightIndex);
 
             // For successful fold, fold types on both indexes has to be opposite value
             if( foldVector.get(leftIndex) == foldVector.get(rightIndex) ){
@@ -63,7 +62,10 @@ public class BuildBridge {
 
         while(middleIndex <= lastIndex) {
             int foldSize = lastIndex - middleIndex;
-            boolean isPossible = isFoldPossible(middleIndex - foldSize);
+            boolean isPossible = isFoldPossible(
+                    middleIndex - foldSize,
+                    foldVector.size() - 1
+            );
 
 
 
