@@ -178,7 +178,7 @@ public class BuildBridge {
 
         while( 0 < foldSize ) {
 
-            if( isFoldPossible(0, rightIndex) ) {
+            if( isFoldPossible(firstIndex, rightIndex) ) {
                 return foldSize;
             }
 
