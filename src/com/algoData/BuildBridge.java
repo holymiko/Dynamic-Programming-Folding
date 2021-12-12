@@ -30,8 +30,10 @@ public class BuildBridge {
 
 
     private boolean isFoldPossible(int leftIndex, int rightIndex) {
-        System.out.println("L "+leftIndex+"  R "+rightIndex);
-
+//        System.out.println("L "+leftIndex+"  R "+rightIndex);
+        if(leftIndex+rightIndex % 2 == 1) {
+            throw new IllegalArgumentException("Range has to have ODD SIZE");
+        }
         // Indexes are moving towards each other to have a symmetry of the fold
         // ->.......<- // .->.....<-. // ..->...<-.. // ...->.<-... //
         while(leftIndex + 1 < rightIndex) {
@@ -57,30 +59,30 @@ public class BuildBridge {
     private void foldMethod() {
         // Init index
         int middleIndex = getMiddleIndex();
-        int lastIndex = foldVector.size() - 1;
+        int afterLastIndex = foldVector.size();
 
 
-        while(middleIndex <= lastIndex) {
-            int foldSize = lastIndex - middleIndex;
-            boolean isPossible = isFoldPossible(
-                    middleIndex - foldSize,
-                    foldVector.size() - 1
-            );
-
-
+        while(middleIndex < afterLastIndex) {
+            // Number of edges (folds) which will reduce foldVector
+            final int foldSize = afterLastIndex - middleIndex;
+            final int leftIndex = middleIndex - foldSize + 1;
+            final int rightIndex = foldVector.size() - 1;
+            boolean isPossible = isFoldPossible(leftIndex, rightIndex);
 
             if(isPossible) {
+                System.out.println("L "+leftIndex+"  R "+rightIndex);
 
+//                System.out.println( "  "+ (isPossible ? "True" : "False" ) ) ;
                 System.out.print("Fold size "+foldSize);
                 System.out.println( "  Index: "+middleIndex );
-                System.out.println( "  "+ (isPossible ? "True" : "False" ) ) ;
+                System.out.println();
 
                 // TODO Perform fold
 //                foldVector = foldVector.subList(0, foldVector.size() - 1 - foldSize*2);
 
                 // TODO Is subList more efficient?
                 // Deleting foldSize + 1 // +1 because of the place where fold will be performed
-                for (int i = 0; i <= foldSize; i++) {
+                for (int i = 0; i < foldSize; i++) {
                     foldVector.remove( foldVector.size() - 1 );
                 }
                 break;
@@ -106,7 +108,7 @@ public class BuildBridge {
         // Load data
         String stringStrip = readInput();
         initFoldVector( stringStrip );
-        System.out.println( stringStrip );
+//        System.out.println( stringStrip );
         printVector();
 
 
