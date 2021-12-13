@@ -8,11 +8,11 @@ import java.util.*;
  */
 public class Folding {
 
-    private final Indexes indexes;
-
     // Works with indexes.
     // Size remains same, elements are not deleted.
     private final List<Fold> foldList;
+    private final Indexes indexes;
+
     private int foldCount;
     private int maxRFold;
     private int maxLFold;
@@ -20,19 +20,21 @@ public class Folding {
     private int rightFoldIndex;
 
     public Folding(String input) {
+        // 0
         foldCount = 0;
         foldList = new ArrayList<>();
-
+        // 1
         for(int i = 0; i < input.length(); i++) {
             foldList.add( input.charAt(i) == 'M' ? Fold.MOUNTAIN : Fold.VALLEY );
         }
-
+        // 2
         indexes = new Indexes(foldList.size() - 1);
+        // 3
         rightFoldIndex = indexes.getMaxFoldIndexOfSide(true);
         leftFoldIndex = indexes.getMaxFoldIndexOfSide(false);
+        // 4
         maxRFold = maxRightFold();
         maxLFold = maxLeftFold();
-
     }
 
     /**
@@ -174,7 +176,6 @@ public class Folding {
     }
 
     public void run() {
-
         while (indexes.getLastIndex() - indexes.getFirstIndex() >= 0) {
             foldMethod();
             foldCount++;
