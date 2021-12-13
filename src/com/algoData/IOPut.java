@@ -48,7 +48,7 @@ public class IOPut {
         }
         System.out.println();
         for (int i = 0; i < foldVector.size(); i++) {
-            System.out.print( i == left || i == right || i == firstIndex || i == lastIndex  ? "^" : ' ' );
+            System.out.print( i == left || i == right /*|| i == firstIndex || i == lastIndex*/  ? "^" : ' ' );
         }
     }
 
