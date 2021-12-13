@@ -37,6 +37,11 @@ public class Folding {
      *
      *          ->.......<-    .->.....<-.    ..->...<-..    ...->.<-...
      *
+     * Movement of indexes
+     *
+     *          .....v.....    .....v.....    .....v.....    .....v.....    .....v.....
+     *          ^         ^     ^       ^       ^     ^         ^   ^           ^ ^
+     *
      * @param leftIndex .
      * @param rightIndex .
      * @throws IllegalArgumentException - When sum of arguments is ODD
