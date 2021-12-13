@@ -115,28 +115,9 @@ public class Folding {
 
         if( maxLFold <= maxRFold ) {
             performRightFold( maxRFold );
-
-            // Update values after fold
-            leftFoldIndex = indexes.getMaxFoldIndexOfSide(false);
-            rightFoldIndex = indexes.getMaxFoldIndexOfSide(true);
-            maxRFold = maxRightFold();
-
-            // TODO Optional
-//            if( maxLFold >= leftFoldIndex ) {
-                maxLFold = maxLeftFold();
-//            }
         } else {
             performLeftFold( maxLFold );
-
-            // Update values after fold
-            leftFoldIndex = indexes.getMaxFoldIndexOfSide(false);
-            rightFoldIndex = indexes.getMaxFoldIndexOfSide(true);
-            maxLFold = maxLeftFold();
-
-            // TODO Optional
-            maxRFold = maxRightFold();
         }
-
     }
 
     /**
@@ -198,9 +179,32 @@ public class Folding {
 
         // 3) Using index
         indexes.decreaseLastIndex(foldSize);
+
+        // Update values after fold
+        leftFoldIndex = indexes.getMaxFoldIndexOfSide(false);
+        rightFoldIndex = indexes.getMaxFoldIndexOfSide(true);
+        maxRFold = maxRightFold();
+
+        // Dynamic programming
+        // Middle index of maxLFold > max leftFoldIndex => compute new maxLFold
+        if( maxLFold > leftFoldIndex + 1 ) {
+            System.out.println(">> Compute new L");
+            maxLFold = maxLeftFold();
+        }
     }
 
     public void performLeftFold(int foldSize) {
         indexes.increaseFirstIndex(foldSize);
+
+        // Update values after fold
+        leftFoldIndex = indexes.getMaxFoldIndexOfSide(false);
+        rightFoldIndex = indexes.getMaxFoldIndexOfSide(true);
+        maxLFold = maxLeftFold();
+
+        // Dynamic programming
+        if( (indexes.getLastIndex() - maxRFold + 1) <  rightFoldIndex ) {
+            System.out.println(">> Compute new R");
+            maxRFold = maxRightFold();
+        }
     }
 }
