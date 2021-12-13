@@ -4,9 +4,9 @@ import java.lang.*;
 
 public class Main {
 
-    private static final BuildBridge buildBridge = new BuildBridge();
+    private static final Folding FOLDING = new Folding();
 
     public static void main(String[] args) {
-        buildBridge.run();
+        FOLDING.run();
     }
 }
