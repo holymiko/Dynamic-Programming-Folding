@@ -50,7 +50,7 @@ public class Indexes {
     public static int getMaxFoldIndexOfSide(int startIndex, int endIndex, boolean isRightSide) {
         int size = endIndex - startIndex + 1;
 
-        return (isRightSide ? size + 1 : size - 2) / 2;
+        return startIndex + ((isRightSide ? size + 1 : size - 2) / 2);
     }
 
     /**

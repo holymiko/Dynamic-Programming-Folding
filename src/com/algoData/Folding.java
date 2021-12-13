@@ -102,8 +102,16 @@ public class Folding {
         System.out.println(">> leftFoldIndex == "+leftFoldIndex);
         System.out.println(">> rightFoldIndex == "+rightFoldIndex);
 
-        performRightFold( maxRightFold(rightFoldIndex) );
-        maxLeftFold(leftFoldIndex);
+        int maxR = maxRightFold(rightFoldIndex);
+        int maxL = maxLeftFold(leftFoldIndex);
+
+        if( maxL <= maxR ) {
+            performRightFold( maxR );
+        } else {
+            performLeftFold( maxL );
+        }
+
+
         System.out.println();
     }
 
@@ -131,11 +139,10 @@ public class Folding {
         return 0;
     }
 
-    // TODO Test
     private int maxLeftFold(int middleIndex) {
         // Number of edges (folds) which will reduce foldVector
-        int foldSize = middleIndex + 1;
-        int rightIndex = middleIndex * 2;
+        int foldSize = middleIndex - indexes.getFirstIndex() + 1;
+        int rightIndex = middleIndex + foldSize - 1;
 
         while( 0 < foldSize ) {
             if( isFoldPossible(indexes.getFirstIndex(), rightIndex) ) {
@@ -156,7 +163,7 @@ public class Folding {
         String stringStrip = IOPut.readInput();
         initFoldVector( stringStrip );
 
-        while (indexes.getLastIndex() >= 0) {
+        while (indexes.getLastIndex() - indexes.getFirstIndex() >= 0) {
             foldMethod();
             foldCount++;
 //            break;
@@ -164,8 +171,6 @@ public class Folding {
         IOPut.printVector(foldVector, indexes.getFirstIndex(), indexes.getLastIndex());
         System.out.println("\nTotal count == "+foldCount);
     }
-
-
 
 
     public void performLeftFold(int foldSize) {
@@ -187,5 +192,3 @@ public class Folding {
         indexes.decreaseLastIndex(foldSize);
     }
 }
-
-
