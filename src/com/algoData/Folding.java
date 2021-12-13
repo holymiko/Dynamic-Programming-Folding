@@ -97,11 +97,9 @@ public class Folding {
         int leftFoldIndex = Indexes.getMaxFoldIndexOfSide(indexes.getFirstIndex(), indexes.getLastIndex(), false);
         int rightFoldIndex = Indexes.getMaxFoldIndexOfSide(indexes.getFirstIndex(), indexes.getLastIndex(), true);
 
-        IOPut.printVector(foldVector, indexes.getFirstIndex(), indexes.getLastIndex());
-        System.out.println();
-        System.out.println(">> leftFoldIndex == "+leftFoldIndex);
-        System.out.println(">> rightFoldIndex == "+rightFoldIndex);
+        IOPut.printListIndex2(foldVector, indexes.getFirstIndex(), indexes.getLastIndex(), leftFoldIndex, rightFoldIndex);
 
+        // TODO Implement Dynamic programming approach
         int maxR = maxRightFold(rightFoldIndex);
         int maxL = maxLeftFold(leftFoldIndex);
 
@@ -110,7 +108,6 @@ public class Folding {
         } else {
             performLeftFold( maxL );
         }
-
 
         System.out.println();
     }

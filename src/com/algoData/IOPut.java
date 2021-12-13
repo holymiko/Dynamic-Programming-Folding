@@ -51,4 +51,12 @@ public class IOPut {
             System.out.print( i == left || i == right || i == firstIndex || i == lastIndex  ? "^" : ' ' );
         }
     }
+
+    public static void printListIndex2(List<Fold> foldVector, int firstIndex, int lastIndex, int leftFoldIndex, int rightFoldIndex) {
+        IOPut.printVector(foldVector, firstIndex, lastIndex);
+        System.out.println();
+        System.out.println(">> leftFoldIndex == "+leftFoldIndex);
+        System.out.println(">> rightFoldIndex == "+rightFoldIndex);
+    }
+
 }
