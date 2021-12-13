@@ -24,10 +24,10 @@ public class IOPut {
     /**
      *
      *          VVMMMVMVVVMVMMMVV
-     *          ^      ^ ^      ^
+     *                 ^ ^
      *
      *          VVMMMVMVVVMVMM___
-     *          ^     ^^     ^
+     *                ^^
      *
      * @param foldVector
      * @param firstIndex
