@@ -1,5 +1,8 @@
 package com.algoData;
 
+/*
+        Safely handles indexing of folding list
+ */
 public class Indexes {
 
     private int firstIndex;
@@ -25,7 +28,7 @@ public class Indexes {
      * @return For odd length, returns middle character
      *         For even length, returns middle + 1 character
      */
-    public static int getMiddleIndex(int endIndex) {
+    public static int getMaxFoldIndexOfSide(int endIndex) {
         return (endIndex + 1) / 2;
     }
 
@@ -44,7 +47,7 @@ public class Indexes {
      * @param isRightSide
      * @return
      */
-    public static int getMiddleIndex(int startIndex, int endIndex, boolean isRightSide) {
+    public static int getMaxFoldIndexOfSide(int startIndex, int endIndex, boolean isRightSide) {
         int size = endIndex - startIndex + 1;
 
         return (isRightSide ? size + 1 : size - 2) / 2;
