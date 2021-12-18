@@ -11,12 +11,6 @@ public class Folding {
     // Works with indexes.
     // Size remains same, elements are not deleted.
     private final List<Fold> foldList;
-    private final Indexes indexes;
-
-    private int maxRFold;
-    private int maxLFold;
-    private int leftFoldIndex;
-    private int rightFoldIndex;
 
     public Folding(String input) {
         // 0
@@ -25,14 +19,6 @@ public class Folding {
         for(int i = 0; i < input.length(); i++) {
             foldList.add( input.charAt(i) == 'M' ? Fold.MOUNTAIN : Fold.VALLEY );
         }
-        // 2
-        indexes = new Indexes(foldList.size() - 1);
-        // 3
-        rightFoldIndex = indexes.getMaxFoldIndexOfSide(true);
-        leftFoldIndex = indexes.getMaxFoldIndexOfSide(false);
-        // 4
-        maxRFold = maxRightFold();
-        maxLFold = maxLeftFold();
     }
 
     /**
@@ -76,8 +62,8 @@ public class Folding {
      *  ODD size - edge in the middle
      * @return
      */
-    private boolean oddSizeFold() {
-        int currentSize = indexes.getLastIndex() - indexes.getFirstIndex() + 1;
+    private boolean oddSizeFold(int firstIndex, int lastIndex) {
+        int currentSize = lastIndex - firstIndex + 1;
 
         if(currentSize % 2 == 0) {
             System.out.println("EVEN size = "+currentSize);
@@ -85,9 +71,9 @@ public class Folding {
         }
 
         System.out.println("ODD size = "+currentSize);
-        if( isFoldPossible(indexes.getFirstIndex(), indexes.getLastIndex()) ) {
+        if( isFoldPossible(firstIndex, lastIndex) ) {
             int foldSize = (currentSize+1) / 2;
-            performRightFold( foldSize );
+//            performRightFold( foldSize );
             System.out.println("ODD FOLD size "+foldSize+"\n");
             return true;
         }
@@ -99,49 +85,51 @@ public class Folding {
      * Tries to perform biggest currently possible fold.
      * Goes from MAX size of fold to size of 1
      */
-    private int foldMethod(int firstIndex, int lastIndex, int foldCount) {
+    private int foldMethod(final int firstIndex, final int lastIndex, int foldCount) {
 
-        // Base cases
+        // TODO Move this below
+        // Update values after fold
+        int maxLeftFoldIndex = Indexes.getMaxFoldIndexOfSide(firstIndex, lastIndex, false);
+        int maxRightFoldIndex = Indexes.getMaxFoldIndexOfSide(firstIndex, lastIndex,true);
+        int maxRFold = maxRightFold(lastIndex, maxRightFoldIndex);
+        int maxLFold = maxLeftFold(firstIndex, maxLeftFoldIndex);
+
+        IOPut.printListIndex2(foldList, firstIndex, lastIndex, maxLeftFoldIndex, maxRightFoldIndex);
+
+        // BASE CASES
+        //      1 Fold
+        if(lastIndex - firstIndex == 0) {
+            return foldCount + 1;
+        }
+        //      2 Folds
         if(lastIndex - firstIndex == 1) {
-            return 1;
-        }
-        if(lastIndex - firstIndex == 2) {
-            return 2;
+            return foldCount + 2;
         }
 
-        // TODO Look into memory
+        // TODO Look into memory, see if the result is already computed
 
-        IOPut.printListIndex2(foldList, indexes.getFirstIndex(), indexes.getLastIndex(), leftFoldIndex, rightFoldIndex);
+//        System.out.println( "maxLeftFold(): "  + maxLFold);
+//        System.out.println( "maxRightFold(): " + maxRFold);
 
-        if( oddSizeFold() ) {
-//            return;
-        }
+        int leftFoldResult = foldMethod(firstIndex + maxLFold, lastIndex, foldCount + 1 );
+        int rightFoldResult = foldMethod(firstIndex, lastIndex - maxRFold, foldCount + 1 );
+        int result = Math.min(leftFoldResult, rightFoldResult);
 
-        System.out.println( "maxLeftFold(): "  + maxLFold);
-        System.out.println( "maxRightFold(): " + maxRFold);
-
-        if( maxLFold <= maxRFold ) {
-            System.out.println("Fold size = "+maxRFold);
-            performRightFold( maxRFold );
-        } else {
-            System.out.println("Fold size = "+maxLFold);
-            performLeftFold( maxLFold );
-        }
-        System.out.println();
-        return foldMethod(firstIndex, lastIndex, foldCount + 1 );
+        // TODO Save result
+        return result;
     }
 
     /**
      * Finds size of biggest currently possible fold.
      * Goes from MAX size of fold to size of 1
      */
-    private int maxRightFold() {
+    private int maxRightFold(int lastIndex, int maxRightFoldIndex) {
         // Number of edges (folds) which will reduce foldVector
-        int foldSize = indexes.getLastIndex() - rightFoldIndex + 1;
-        int leftIndex = rightFoldIndex - foldSize + 1;
+        int foldSize = lastIndex - maxRightFoldIndex + 1;
+        int leftIndex = maxRightFoldIndex - foldSize + 1;
 
         while( 0 < foldSize ) {
-            if( isFoldPossible(leftIndex, indexes.getLastIndex()) ) {
+            if( isFoldPossible(leftIndex, lastIndex) ) {
                 return foldSize;
             }
             // Move index to the right
@@ -151,13 +139,14 @@ public class Folding {
         return 0;
     }
 
-    private int maxLeftFold() {
+    private int maxLeftFold(int firstIndex, int maxLeftFoldIndex) {
         // Number of edges (folds) which will reduce foldVector
-        int foldSize = leftFoldIndex - indexes.getFirstIndex() + 1;
-        int rightIndex = leftFoldIndex + foldSize - 1;
+        int foldSize = maxLeftFoldIndex - firstIndex + 1;
+        int rightIndex = maxLeftFoldIndex + foldSize - 1;
 
         while( 0 < foldSize ) {
-            if( isFoldPossible(indexes.getFirstIndex(), rightIndex) ) {
+            // TODO Look into the memory
+            if( isFoldPossible(firstIndex, rightIndex) ) {
                 return foldSize;
             }
             // Move index to the left
@@ -168,52 +157,8 @@ public class Folding {
     }
 
     public void run() {
-        int foldCount = foldMethod(indexes.getFirstIndex(), indexes.getLastIndex(), 0);
-
-        IOPut.printVector(foldList, indexes.getFirstIndex(), indexes.getLastIndex());
-        System.out.println("\nTotal count == "+foldCount);
+        int foldCount = foldMethod(0, foldList.size() - 1, 0);
+        System.out.println(foldCount);
     }
 
-
-    public void performRightFold(int foldSize) {
-        // DON'T DELETE UNUSED - We want to use this in Documentation
-
-        // 1) Creating subList - copying is TOO EXPENSIVE
-//                foldVector = foldVector.subList(0, lastIndex - foldSize*2);
-
-        // 2) Removing elements from Vector - still expensive
-//        for (int i = 0; i < foldSize; i++) {
-//            foldVector.remove( foldVector.size() - 1 );
-//        }
-
-        // 3) Using index
-        indexes.decreaseLastIndex(foldSize);
-
-        // Update values after fold
-        leftFoldIndex = indexes.getMaxFoldIndexOfSide(false);
-        rightFoldIndex = indexes.getMaxFoldIndexOfSide(true);
-        maxRFold = maxRightFold();
-
-        // Dynamic programming
-        // Middle index of maxLFold > max leftFoldIndex => compute new maxLFold
-        if( maxLFold > leftFoldIndex + 1 ) {
-            System.out.println(">> Compute new L");
-            maxLFold = maxLeftFold();
-        }
-    }
-
-    public void performLeftFold(int foldSize) {
-        indexes.increaseFirstIndex(foldSize);
-
-        // Update values after fold
-        leftFoldIndex = indexes.getMaxFoldIndexOfSide(false);
-        rightFoldIndex = indexes.getMaxFoldIndexOfSide(true);
-        maxLFold = maxLeftFold();
-
-        // Dynamic programming
-        if( (indexes.getLastIndex() - maxRFold + 1) <  rightFoldIndex ) {
-            System.out.println(">> Compute new R");
-            maxRFold = maxRightFold();
-        }
-    }
 }
