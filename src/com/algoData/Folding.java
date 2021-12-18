@@ -70,51 +70,36 @@ public class Folding {
      * Tries to perform biggest currently possible fold.
      * Goes from MAX size of fold to size of 1
      */
-    private int foldMethod(final int firstIndex, final int lastIndex, int foldCount) {
-
-        // TODO Move this below
-        // Update values after fold
-        int maxLeftFoldIndex = getMaxFoldIndexOfSide(firstIndex, lastIndex, false);
-        int maxRightFoldIndex = getMaxFoldIndexOfSide(firstIndex, lastIndex,true);
-        int maxRFold = maxRightFold(lastIndex, maxRightFoldIndex);
-        int maxLFold = maxLeftFold(firstIndex, maxLeftFoldIndex);
-
-//        IOPut.printListIndex2(foldList, firstIndex, lastIndex, maxLeftFoldIndex, maxRightFoldIndex);
+    private int foldMethod(final int firstIndex, final int lastIndex) {
 
         // BASE CASES
         //      1 Fold
         if(lastIndex - firstIndex == 0) {
-            return foldCount + 1;
+            return 1;
         }
         //      2 Folds
         if(lastIndex - firstIndex == 1) {
-            return foldCount + 2;
+            return 2;
         }
 
-        // TODO Look into memory, see if the result is already computed
+        // Look into memory, Result might be already computed
         if( memory[firstIndex][lastIndex-firstIndex] != 0 ) {
-
-
-//            int leftFoldResult = foldMethod(firstIndex + maxLFold, lastIndex, foldCount + 1 );
-//            int rightFoldResult = foldMethod(firstIndex, lastIndex - maxRFold, foldCount + 1 );
-//            int result = Math.min(leftFoldResult, rightFoldResult);
-//
-//            if( memory[firstIndex][lastIndex-firstIndex] != (result - foldCount) ) {
-//                System.out.print("First: "+firstIndex+"   Last: "+lastIndex);
-//                System.out.println("   Mem: "+ memory[firstIndex][lastIndex-firstIndex]+"  Res:"+ (result - foldCount));
-//            }
-
-            // TODO Save result
             return memory[firstIndex][lastIndex-firstIndex];
         }
 
-        int leftFoldResult = foldMethod(firstIndex + maxLFold, lastIndex, 0 );
-        int rightFoldResult = foldMethod(firstIndex, lastIndex - maxRFold, 0 );
+        int maxRFold = maxRightFold(lastIndex, getMaxFoldIndexOfSide(firstIndex, lastIndex,true));
+        int maxLFold = maxLeftFold(firstIndex, getMaxFoldIndexOfSide(firstIndex, lastIndex, false));
+        int leftFoldResult = foldMethod(firstIndex + maxLFold, lastIndex);
+        int rightFoldResult = foldMethod(firstIndex, lastIndex - maxRFold);
+
         int result = Math.min(leftFoldResult, rightFoldResult) + 1;
+
+//        IOPut.printListIndex2(foldList, firstIndex, lastIndex, maxLeftFoldIndex, maxRightFoldIndex);
+
+        // Save result
         memory[firstIndex][lastIndex-firstIndex] = result;
 
-        // TODO Save result
-        return result + foldCount;
+        return result;
     }
 
     /**
@@ -155,7 +140,7 @@ public class Folding {
     }
 
     public void run() {
-        int foldCount = foldMethod(0, foldList.size() - 1, 0);
+        int foldCount = foldMethod(0, foldList.size() - 1);
         System.out.println(foldCount);
     }
 
