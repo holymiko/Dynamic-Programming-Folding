@@ -11,7 +11,7 @@ public class Folding {
     // Works with indexes.
     // Size remains same, elements are not deleted.
     private final List<Fold> foldList;
-    private int[][] memory;
+    private final int[][] memory;
 
     public Folding(String input) {
         foldList = new ArrayList<>();
@@ -23,9 +23,6 @@ public class Folding {
 
             Arrays.fill(memory[i], 0);
         }
-//        for(int i = 0; i < input.length(); i++) {
-//            System.out.println(memory[i].length);
-//        }
     }
 
     /**
@@ -48,13 +45,11 @@ public class Folding {
      * @return True - Fold with given positions can be performed
      */
     private boolean isFoldPossible(int leftIndex, int rightIndex) throws IllegalArgumentException {
-//        System.out.println("L "+leftIndex+"  R "+rightIndex);
         if(leftIndex+rightIndex % 2 == 1) {
             throw new IllegalArgumentException("Range has to have ODD SIZE");
         }
 
         while(leftIndex + 1 < rightIndex) {
-//            System.out.println(">> L "+leftIndex+"  R "+rightIndex);
             // For successful fold, fold types on both indexes has to be opposite value
             if( foldList.get(leftIndex) == foldList.get(rightIndex) ){
                 return false;
