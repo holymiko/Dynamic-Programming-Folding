@@ -13,7 +13,6 @@ public class Folding {
     private final List<Fold> foldList;
     private final Indexes indexes;
 
-    private int foldCount;
     private int maxRFold;
     private int maxLFold;
     private int leftFoldIndex;
@@ -21,7 +20,6 @@ public class Folding {
 
     public Folding(String input) {
         // 0
-        foldCount = 0;
         foldList = new ArrayList<>();
         // 1
         for(int i = 0; i < input.length(); i++) {
@@ -101,12 +99,22 @@ public class Folding {
      * Tries to perform biggest currently possible fold.
      * Goes from MAX size of fold to size of 1
      */
-    private void foldMethod() {
+    private int foldMethod(int firstIndex, int lastIndex, int foldCount) {
+
+        // Base cases
+        if(lastIndex - firstIndex == 1) {
+            return 1;
+        }
+        if(lastIndex - firstIndex == 2) {
+            return 2;
+        }
+
+        // TODO Look into memory
 
         IOPut.printListIndex2(foldList, indexes.getFirstIndex(), indexes.getLastIndex(), leftFoldIndex, rightFoldIndex);
 
         if( oddSizeFold() ) {
-            return;
+//            return;
         }
 
         System.out.println( "maxLeftFold(): "  + maxLFold);
@@ -120,7 +128,7 @@ public class Folding {
             performLeftFold( maxLFold );
         }
         System.out.println();
-
+        return foldMethod(firstIndex, lastIndex, foldCount + 1 );
     }
 
     /**
@@ -160,10 +168,8 @@ public class Folding {
     }
 
     public void run() {
-        while (indexes.getLastIndex() - indexes.getFirstIndex() >= 0) {
-            foldMethod();
-            foldCount++;
-        }
+        int foldCount = foldMethod(indexes.getFirstIndex(), indexes.getLastIndex(), 0);
+
         IOPut.printVector(foldList, indexes.getFirstIndex(), indexes.getLastIndex());
         System.out.println("\nTotal count == "+foldCount);
     }
