@@ -11,13 +11,21 @@ public class Folding {
     // Works with indexes.
     // Size remains same, elements are not deleted.
     private final List<Fold> foldList;
+    private int[][] memory;
 
     public Folding(String input) {
         foldList = new ArrayList<>();
+        memory = new int[input.length()][];
 
         for(int i = 0; i < input.length(); i++) {
             foldList.add( input.charAt(i) == 'M' ? Fold.MOUNTAIN : Fold.VALLEY );
+            memory[i] = new int[input.length() - i];
+
+            Arrays.fill(memory[i], 0);
         }
+//        for(int i = 0; i < input.length(); i++) {
+//            System.out.println(memory[i].length);
+//        }
     }
 
     /**
@@ -84,16 +92,29 @@ public class Folding {
         }
 
         // TODO Look into memory, see if the result is already computed
+        if( memory[firstIndex][lastIndex-firstIndex] != 0 ) {
 
-//        System.out.println( "maxLeftFold(): "  + maxLFold);
-//        System.out.println( "maxRightFold(): " + maxRFold);
 
-        int leftFoldResult = foldMethod(firstIndex + maxLFold, lastIndex, foldCount + 1 );
-        int rightFoldResult = foldMethod(firstIndex, lastIndex - maxRFold, foldCount + 1 );
-        int result = Math.min(leftFoldResult, rightFoldResult);
+//            int leftFoldResult = foldMethod(firstIndex + maxLFold, lastIndex, foldCount + 1 );
+//            int rightFoldResult = foldMethod(firstIndex, lastIndex - maxRFold, foldCount + 1 );
+//            int result = Math.min(leftFoldResult, rightFoldResult);
+//
+//            if( memory[firstIndex][lastIndex-firstIndex] != (result - foldCount) ) {
+//                System.out.print("First: "+firstIndex+"   Last: "+lastIndex);
+//                System.out.println("   Mem: "+ memory[firstIndex][lastIndex-firstIndex]+"  Res:"+ (result - foldCount));
+//            }
+
+            // TODO Save result
+            return memory[firstIndex][lastIndex-firstIndex];
+        }
+
+        int leftFoldResult = foldMethod(firstIndex + maxLFold, lastIndex, 0 );
+        int rightFoldResult = foldMethod(firstIndex, lastIndex - maxRFold, 0 );
+        int result = Math.min(leftFoldResult, rightFoldResult) + 1;
+        memory[firstIndex][lastIndex-firstIndex] = result;
 
         // TODO Save result
-        return result;
+        return result + foldCount;
     }
 
     /**
