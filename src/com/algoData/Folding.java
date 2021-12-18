@@ -13,9 +13,8 @@ public class Folding {
     private final List<Fold> foldList;
 
     public Folding(String input) {
-        // 0
         foldList = new ArrayList<>();
-        // 1
+
         for(int i = 0; i < input.length(); i++) {
             foldList.add( input.charAt(i) == 'M' ? Fold.MOUNTAIN : Fold.VALLEY );
         }
@@ -59,28 +58,6 @@ public class Folding {
     }
 
     /**
-     *  ODD size - edge in the middle
-     * @return
-     */
-    private boolean oddSizeFold(int firstIndex, int lastIndex) {
-        int currentSize = lastIndex - firstIndex + 1;
-
-        if(currentSize % 2 == 0) {
-            System.out.println("EVEN size = "+currentSize);
-            return false;
-        }
-
-        System.out.println("ODD size = "+currentSize);
-        if( isFoldPossible(firstIndex, lastIndex) ) {
-            int foldSize = (currentSize+1) / 2;
-//            performRightFold( foldSize );
-            System.out.println("ODD FOLD size "+foldSize+"\n");
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Performs 1 fold.
      * Tries to perform biggest currently possible fold.
      * Goes from MAX size of fold to size of 1
@@ -89,12 +66,12 @@ public class Folding {
 
         // TODO Move this below
         // Update values after fold
-        int maxLeftFoldIndex = Indexes.getMaxFoldIndexOfSide(firstIndex, lastIndex, false);
-        int maxRightFoldIndex = Indexes.getMaxFoldIndexOfSide(firstIndex, lastIndex,true);
+        int maxLeftFoldIndex = getMaxFoldIndexOfSide(firstIndex, lastIndex, false);
+        int maxRightFoldIndex = getMaxFoldIndexOfSide(firstIndex, lastIndex,true);
         int maxRFold = maxRightFold(lastIndex, maxRightFoldIndex);
         int maxLFold = maxLeftFold(firstIndex, maxLeftFoldIndex);
 
-        IOPut.printListIndex2(foldList, firstIndex, lastIndex, maxLeftFoldIndex, maxRightFoldIndex);
+//        IOPut.printListIndex2(foldList, firstIndex, lastIndex, maxLeftFoldIndex, maxRightFoldIndex);
 
         // BASE CASES
         //      1 Fold
@@ -159,6 +136,26 @@ public class Folding {
     public void run() {
         int foldCount = foldMethod(0, foldList.size() - 1, 0);
         System.out.println(foldCount);
+    }
+
+    /**
+     * @param firstIndex
+     * @param lastIndex
+     * @param isRightSide
+     * @return
+     *
+     *         isRightSide == true
+     *         _ _ _ _ _     _ _ _ _
+     *             ^             ^
+     *
+     *         isRightSide == false
+     *         _ _ _ _ _     _ _ _ _
+     *           ^             ^
+     *
+     */
+    public static int getMaxFoldIndexOfSide(int firstIndex, int lastIndex, boolean isRightSide) {
+        int size = lastIndex - firstIndex + 1;
+        return firstIndex + ((isRightSide ? size : size - 2) / 2);
     }
 
 }

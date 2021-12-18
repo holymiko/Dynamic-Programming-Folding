@@ -34,8 +34,8 @@ public class IOPut {
      * @param lastIndex
      */
     public static void printVector(List<Fold> foldVector, int firstIndex, int lastIndex) {
-        int left = Indexes.getMaxFoldIndexOfSide(firstIndex, lastIndex, false);
-        int right = Indexes.getMaxFoldIndexOfSide(firstIndex, lastIndex, true);
+        int left = Folding.getMaxFoldIndexOfSide(firstIndex, lastIndex, false);
+        int right = Folding.getMaxFoldIndexOfSide(firstIndex, lastIndex, true);
 
         for (int i = 0; i < firstIndex; i++) {
             System.out.print('_');
