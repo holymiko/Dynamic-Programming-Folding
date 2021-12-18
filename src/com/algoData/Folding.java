@@ -111,13 +111,16 @@ public class Folding {
 
         System.out.println( "maxLeftFold(): "  + maxLFold);
         System.out.println( "maxRightFold(): " + maxRFold);
-        System.out.println();
 
         if( maxLFold <= maxRFold ) {
+            System.out.println("Fold size = "+maxRFold);
             performRightFold( maxRFold );
         } else {
+            System.out.println("Fold size = "+maxLFold);
             performLeftFold( maxLFold );
         }
+        System.out.println();
+
     }
 
     /**
