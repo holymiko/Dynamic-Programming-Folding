@@ -2,10 +2,6 @@ package com.algoData;
 
 import java.util.*;
 
-/**
- * Left side stays, right side is in the move.
- * Right side is folded on left.
- */
 public class Folding {
 
     // Works with indexes.
