@@ -56,11 +56,6 @@ public class Folding {
         return true;
     }
 
-    /**
-     * Performs 1 fold.
-     * Tries to perform biggest currently possible fold.
-     * Goes from MAX size of fold to size of 1
-     */
     private int foldMethod(final int firstIndex, final int lastIndex) {
 
         // BASE CASES
