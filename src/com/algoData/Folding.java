@@ -83,8 +83,9 @@ public class Folding {
             return 2;
         }
 
-        if( memory[firstIndex][lastIndex-firstIndex] != 0 ) {
-            return memory[firstIndex][lastIndex-firstIndex];
+        int retrieved = memory[firstIndex][lastIndex-firstIndex];
+        if( retrieved != 0 ) {
+            return retrieved;
         }
 
         int maxRFold = maxRightFold(lastIndex, getMaxFoldIndexOfSide(firstIndex, lastIndex,true));
@@ -130,7 +131,6 @@ public class Folding {
         int rightIndex = maxLeftFoldIndex + foldSize - 1;
 
         while( 0 < foldSize ) {
-            // TODO Look into the memory
             if( isFoldPossible(firstIndex, rightIndex) ) {
                 return foldSize;
             }
