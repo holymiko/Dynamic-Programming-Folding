@@ -145,7 +145,7 @@ public class Folding {
      */
     public void run() {
         int foldCount = foldMethod(0, foldList.size() - 1);
-        System.out.println(foldCount);
+        IOPut.printCount(foldCount);
     }
 
     /**

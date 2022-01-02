@@ -19,4 +19,8 @@ public class IOPut {
         s.close();
         return d;
     }
+
+    public static void printCount(int foldCount) {
+        System.out.println(foldCount);
+    }
 }
