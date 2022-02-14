@@ -16,6 +16,8 @@ import java.util.*;
  */
 public class Folding {
 
+    // Works with indexes.
+    // Size remains same, elements are not deleted.
     private final List<Fold> foldList;
     private final int[][] memory;
 
@@ -56,6 +58,7 @@ public class Folding {
         }
 
         while(leftIndex + 1 < rightIndex) {
+            // For successful fold, fold types on both indexes has to be opposite value
             if( foldList.get(leftIndex) == foldList.get(rightIndex) ){
                 return false;
             }
@@ -76,16 +79,20 @@ public class Folding {
      * @return minimum required number of folds for this interval as integer.
      */
     private int foldMethod(final int firstIndex, final int lastIndex) {
+
+        // BASE CASES
+        //      1 Fold
         if(lastIndex - firstIndex == 0) {
             return 1;
         }
+        //      2 Folds
         if(lastIndex - firstIndex == 1) {
             return 2;
         }
 
-        int retrieved = memory[firstIndex][lastIndex-firstIndex];
-        if( retrieved != 0 ) {
-            return retrieved;
+        // Look into memory, Result might be already computed
+        if( memory[firstIndex][lastIndex-firstIndex] != 0 ) {
+            return memory[firstIndex][lastIndex-firstIndex];
         }
 
         int maxRFold = maxRightFold(lastIndex, getMaxFoldIndexOfSide(firstIndex, lastIndex,true));
@@ -95,6 +102,9 @@ public class Folding {
 
         int result = Math.min(leftFoldResult, rightFoldResult) + 1;
 
+//        IOPut.printListIndex2(foldList, firstIndex, lastIndex, maxLeftFoldIndex, maxRightFoldIndex);
+
+        // Save result
         memory[firstIndex][lastIndex-firstIndex] = result;
 
         return result;
@@ -107,6 +117,7 @@ public class Folding {
      * @return size of the largest possible valid fold on the right-hand side as integer
      */
     private int maxRightFold(int lastIndex, int maxRightFoldIndex) {
+        // Number of edges (folds) which will reduce foldVector
         int foldSize = lastIndex - maxRightFoldIndex + 1;
         int leftIndex = maxRightFoldIndex - foldSize + 1;
 
@@ -114,6 +125,7 @@ public class Folding {
             if( isFoldPossible(leftIndex, lastIndex) ) {
                 return foldSize;
             }
+            // Move index to the right
             leftIndex += 2;
             foldSize--;
         }
@@ -127,13 +139,16 @@ public class Folding {
      * @return size of the largest possible valid fold on the left-hand side as integer
      */
     private int maxLeftFold(int firstIndex, int maxLeftFoldIndex) {
+        // Number of edges (folds) which will reduce foldVector
         int foldSize = maxLeftFoldIndex - firstIndex + 1;
         int rightIndex = maxLeftFoldIndex + foldSize - 1;
 
         while( 0 < foldSize ) {
+            // TODO Look into the memory
             if( isFoldPossible(firstIndex, rightIndex) ) {
                 return foldSize;
             }
+            // Move index to the left
             rightIndex -= 2;
             foldSize--;
         }
@@ -143,9 +158,10 @@ public class Folding {
     /**
      * Makes the first recursive call and prints the result.
      */
-    public void run() {
+    public int run() {
         int foldCount = foldMethod(0, foldList.size() - 1);
-        IOPut.printCount(foldCount);
+        System.out.println(foldCount);
+        return foldCount;
     }
 
     /**
