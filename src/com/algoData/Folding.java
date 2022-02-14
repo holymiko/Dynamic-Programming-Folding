@@ -125,9 +125,10 @@ public class Folding {
         return 0;
     }
 
-    public void run() {
+    public int run() {
         int foldCount = foldMethod(0, foldList.size() - 1);
         System.out.println(foldCount);
+        return foldCount;
     }
 
     /**
