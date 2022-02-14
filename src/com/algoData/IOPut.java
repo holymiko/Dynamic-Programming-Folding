@@ -5,58 +5,22 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /**
- * Input / Output class handles input from terminal and provides visualizations
+ * Handles Input/Output
  */
 public class IOPut {
 
     /**
-     * Reads the input from a .txt file
+     * Reads the first line of a .txt file
+     * @return contents of the first line of a .txt file as string
      */
     public static String readInput() {
         Scanner s = new Scanner(System.in);
         String d = s.nextLine().trim().toUpperCase(Locale.ROOT);
-
         s.close();
         return d;
     }
 
-
-    /**
-     *
-     *          VVMMMVMVVVMVMMMVV
-     *                 ^ ^
-     *
-     *          VVMMMVMVVVMVMM___
-     *                ^^
-     *
-     * @param foldVector
-     * @param firstIndex
-     * @param lastIndex
-     */
-    public static void printVector(List<Fold> foldVector, int firstIndex, int lastIndex) {
-        int left = Folding.getMaxFoldIndexOfSide(firstIndex, lastIndex, false);
-        int right = Folding.getMaxFoldIndexOfSide(firstIndex, lastIndex, true);
-
-        for (int i = 0; i < firstIndex; i++) {
-            System.out.print('_');
-        }
-        for (int i = firstIndex; i <= lastIndex; i++) {
-            System.out.print( foldVector.get(i).equals(Fold.MOUNTAIN) ? 'M' : 'V' );
-        }
-        for (int i = lastIndex; i < foldVector.size() - 1; i++) {
-            System.out.print('_');
-        }
-        System.out.println();
-        for (int i = 0; i < foldVector.size(); i++) {
-            System.out.print( i == left || i == right ? "^" : ' ' );
-        }
+    public static void printCount(int foldCount) {
+        System.out.println(foldCount);
     }
-
-    public static void printListIndex2(List<Fold> foldVector, int firstIndex, int lastIndex, int leftFoldIndex, int rightFoldIndex) {
-        IOPut.printVector(foldVector, firstIndex, lastIndex);
-        System.out.println();
-        System.out.println(">> leftFoldIndex == "+leftFoldIndex);
-        System.out.println(">> rightFoldIndex == "+rightFoldIndex);
-    }
-
 }
