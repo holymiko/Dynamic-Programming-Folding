@@ -56,7 +56,7 @@ public class Folding {
      * @return false if the folds at the indices are the same anywhere, true otherwise
      */
     private boolean isFoldPossible(int leftIndex, int rightIndex) throws IllegalArgumentException {
-        if(leftIndex+rightIndex % 2 == 1) {
+        if(leftIndex + rightIndex % 2 == 1) {
             throw new IllegalArgumentException("Range has to have ODD SIZE");
         }
 
@@ -81,7 +81,7 @@ public class Folding {
      * @param lastIndex End of the interval over which the smallest number of folds is determined
      * @return minimum required number of folds for this interval as integer.
      */
-    private int foldMethod(final int firstIndex, final int lastIndex) {
+    private int computeMinFoldCount(final int firstIndex, final int lastIndex) {
 
         // BASE CASES
         //      1 Fold
@@ -100,8 +100,8 @@ public class Folding {
 
         int maxRFold = maxRightFold(lastIndex, getMaxFoldIndexOfSide(firstIndex, lastIndex,true));
         int maxLFold = maxLeftFold(firstIndex, getMaxFoldIndexOfSide(firstIndex, lastIndex, false));
-        int leftFoldResult = foldMethod(firstIndex + maxLFold, lastIndex);
-        int rightFoldResult = foldMethod(firstIndex, lastIndex - maxRFold);
+        int leftFoldResult = computeMinFoldCount(firstIndex + maxLFold, lastIndex);
+        int rightFoldResult = computeMinFoldCount(firstIndex, lastIndex - maxRFold);
 
         int result = Math.min(leftFoldResult, rightFoldResult) + 1;
 
@@ -156,12 +156,10 @@ public class Folding {
     }
 
     /**
-     * Makes the first recursive call and prints the result.
+     * Makes the initial call on recursive method.
      */
-    public int run() {
-        int foldCount = foldMethod(0, foldList.size() - 1);
-        System.out.println(foldCount);
-        return foldCount;
+    public int computeMinFoldCount() {
+        return computeMinFoldCount(0, foldList.size() - 1);
     }
 
     /**
@@ -180,7 +178,7 @@ public class Folding {
      *             ^          ^
      *
      */
-    public static int getMaxFoldIndexOfSide(int firstIndex, int lastIndex, boolean isRightSide) {
+    private static int getMaxFoldIndexOfSide(int firstIndex, int lastIndex, boolean isRightSide) {
         int size = lastIndex - firstIndex + 1;
         return firstIndex + ((isRightSide ? size : size - 2) / 2);
     }

@@ -21,9 +21,10 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         for (int i = 1; i <= 5; i++) {
-            String filename = SRC_DIR + INPUT_FILE_PREFIX + i + INPUT_FILE_SUFFIX;
-            String input = readInput(filename);
-            new Folding(input).run();
+            String inputFileName = SRC_DIR + INPUT_FILE_PREFIX + i + INPUT_FILE_SUFFIX;
+            String input = readInput(inputFileName);
+            int minFoldCount = new Folding(input).computeMinFoldCount();
+            System.out.println(minFoldCount);
         }
     }
 }
